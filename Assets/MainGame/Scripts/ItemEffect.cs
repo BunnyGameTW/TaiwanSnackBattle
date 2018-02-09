@@ -8,14 +8,11 @@ public class ItemEffect : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
-   //     _itemdata = GetComponent<ItemData>();
-       // StartCoroutine(timer());
         Invoke("timer", _itemdata.existTime);
 	}
 	void timer()
     {
-        // yield return new WaitForSeconds(_itemdata.existTime);
-        Debug.Log(GetComponentInParent<PlaneData>());
+       
         GetComponentInParent<PlaneData>().hasItem = false;
         Destroy(this.gameObject);
     }
@@ -36,7 +33,7 @@ public class ItemEffect : MonoBehaviour {
         switch (_itemdata.type)
         {
             case 0:
-                Debug.Log("eat item normal");
+              
                 playerCol.gameObject.GetComponent<PlayerData>().score += _itemdata.score;
                 GetComponentInParent<PlaneData>().hasItem = false;
                 Destroy(this.gameObject);             

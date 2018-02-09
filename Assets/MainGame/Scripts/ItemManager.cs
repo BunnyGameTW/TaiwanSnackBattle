@@ -14,11 +14,12 @@ public class ItemManager : MonoBehaviour {
     }
     public ItemList[] _items;
     float generatetimer;
-    
-  
-   
-	// Use this for initialization
-	void Start () {
+    public List<GameObject> ItemsList = new List<GameObject>();//Item 
+
+
+
+    // Use this for initialization
+    void Start () {
         //開始先產生n個 統一交給gameManager控制
         generatetimer = 0;
         InvokeRepeating("generateTimer", 0, Time.deltaTime);
@@ -40,15 +41,15 @@ public class ItemManager : MonoBehaviour {
     }
     public void randomGenerate(int n)
     {
-       
+
         int mother = 0;
         foreach (ItemList _item in _items)
         {
-            mother +=_item.chance;
+            mother += _item.chance;
         }
-        
+
         for (int i = 0; i < n; i++)
-        {           
+        {
             int son = Random.Range(1, mother + 1);
             int index = 999;
             int tmp;
@@ -65,24 +66,43 @@ public class ItemManager : MonoBehaviour {
                     }
                     else
                     {
-                        tmp += _items[j].chance;                     
+                        tmp += _items[j].chance;
                     }
                 }
             }
             //TODO:改成真正的隨機
-            GameObject [] _planes = GameObject.FindGameObjectsWithTag("Ground");
+            GameObject[] _planes = GameObject.FindGameObjectsWithTag("Ground");
+
+
+            int _random = Random.Range(0, _planes.Length - 1);
+
+            if (ItemsList.Count == 0)
+            {
+                for (int g = 0; g < _planes.Length; g++)
+                {
+                    ItemsList.Add(null);
+                }
+            }
+
+            if (ItemsList[_random] != null)
+            {
+                break;
+            }
+
             foreach (GameObject _plane in _planes)
             {
-                if (!_plane.GetComponent<PlaneData>().hasItem) {
-                    Vector3 pos = _plane.transform.position + new Vector3(0, _items[index].item.GetComponent<ItemData>().yOffsst, 0);//set item y offset
-                    Vector3 _s = _plane.transform.localScale;
+                if (!_planes[_random].GetComponent<PlaneData>().hasItem)
+                {
+                    Vector3 pos = _planes[_random].transform.position + new Vector3(0, _items[index].item.GetComponent<ItemData>().yOffsst, 0);//set item y offset
+                    Vector3 _s = _planes[_random].transform.localScale;
                     _items[index].item.transform.localScale = new Vector3(1 / _s.x, 1 / _s.y, 1 / _s.z); //set scale to world == 1
 
-                    Instantiate(_items[index].item, pos, transform.rotation,_plane.transform);
-                     _plane.GetComponent<PlaneData>().hasItem = true;
+                    GameObject go = Instantiate(_items[index].item, pos, transform.rotation, _planes[_random].transform);
+                    ItemsList[_random] = go;
+                    _planes[_random].GetComponent<PlaneData>().hasItem = true;
                     break;
                 }
-            }          
+            }
         }
     }
     public void generateSpecial(int _type, int num)//產生第幾種物品

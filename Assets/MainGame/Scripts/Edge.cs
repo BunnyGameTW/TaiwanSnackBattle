@@ -25,4 +25,5 @@ public class Edge : MonoBehaviour {
     {
         Debug.Log("coll");
     }
+    
 }

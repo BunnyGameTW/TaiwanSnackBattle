@@ -12,7 +12,6 @@ public class CameraControl : MonoBehaviour {
     public Type type;
     public float yOffset;
     float distance;
-    public GameObject emp;
     // Use this for initialization
     void Start () {
     }
@@ -56,8 +55,7 @@ public class CameraControl : MonoBehaviour {
             default:
                 break;
         }
-        float VerticalHightSeen = Camera.main.orthographicSize * 2.0f;
-        float HorizontalHeightSeen = VerticalHightSeen * Screen.width / Screen.height;
+      
         Vector3 _LB2= GetComponent<Camera>().ScreenToWorldPoint(transform.position);
         Vector3 _RT2 = GetComponent<Camera>().ScreenToWorldPoint(transform.position + new Vector3(GetComponent<Camera>().scaledPixelWidth, GetComponent<Camera>().scaledPixelHeight, 0));
 

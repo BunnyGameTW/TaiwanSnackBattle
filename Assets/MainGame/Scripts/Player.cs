@@ -15,26 +15,38 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerData = GetComponent<PlayerData>();
         OntheGround = false;
+        InvokeRepeating("goDie", GameManager.game.hungerTime, GameManager.game.hungerTime);
     }
 
     // Update is called once per frame
     void Update()
     {
- //       Debug.Log("velocity:" + rb.velocity);
-        Control();
-        //
-        //死亡判定
-        //掉到底下不能控制N秒
-        //衝刺
+
+        if (playerData._status == PlayerData.PlayerStatus.FakeDie || playerData._status == PlayerData.PlayerStatus.Die) playerData.canControl = false;
+        else playerData.canControl = true;      
+       if (playerData.canControl) Control();
+        checkDie();
+        //TODO:衝刺
+    }
+    void checkDie() {
+        if(playerData.score <= 0) {
+            playerData._status = PlayerData.PlayerStatus.Die;
+            GameManager.game.gameOver(playerData.Type);
+}
+    }
+    void goDie()
+    {
+        playerData.score += GameManager.game.HungerScore;
+        Debug.Log("player "+playerData.Type+": " + playerData.score);
     }
     void Control() {
         if (playerData.canMove) { Move(); }
         if (playerData.canJump && OntheGround) { Jump(); }
 
-        if (rb.velocity.y > 0) { playerData._status = PlayerData.PlayerStatus.JumpUp; }//TODO:看一下jump值
+        if (rb.velocity.y > 0) { playerData._status = PlayerData.PlayerStatus.JumpUp; }
         else playerData._status = PlayerData.PlayerStatus.JumpDown;
         //if (rb.velocity.y == 0) playerData.canJump = true;
-        //    Debug.Log(rb.velocity.y);
+        
         //穿透
         if (playerData._status == PlayerData.PlayerStatus.JumpUp)
         {
@@ -47,14 +59,15 @@ public class Player : MonoBehaviour
     }
     void Move()
     {
-
         if (Input.GetKey(playerData.playKeyCode.Left))
         {
             ve = new Vector2(-1, 0);
+            setRot(-90.0f);
         }
         else if (Input.GetKey(playerData.playKeyCode.Right))
         {
             ve = new Vector2(1, 0);
+            setRot(90.0f);
         }
         else
         {
@@ -74,13 +87,14 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(playerData.playKeyCode.Jump))
         {
             rb.AddForce(new Vector3(0, playerData.JumpHeight, 0), ForceMode.Impulse);
-            Debug.Log("force: " + playerData.JumpHeight);
+            setRot(180);
         }
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" )//相撞彈開
         {
+            
             if (collision.gameObject.transform.position.x - transform.position.x > 0)//物體在右
             {
                 rb.AddForce(new Vector3(-30 * Time.deltaTime, 0), ForceMode.Impulse);
@@ -101,8 +115,8 @@ public class Player : MonoBehaviour
         {
             OntheGround = true;           
         }
-        if (collision.gameObject.tag == "Player")
-        {
+        if (collision.gameObject.tag == "Player" )
+        {          
             if (collision.gameObject.transform.position.x - transform.position.x > 0)//物體在右
             {
                 rb.AddForce(new Vector3(-30 * Time.deltaTime, 0), ForceMode.Impulse);
@@ -111,8 +125,7 @@ public class Player : MonoBehaviour
             else
             {
                 rb.AddForce(new Vector3(30 * Time.deltaTime, 0), ForceMode.Impulse);
-                collision.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-30 * Time.deltaTime, 0), ForceMode.Impulse);
-                
+                collision.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-30 * Time.deltaTime, 0), ForceMode.Impulse);              
             }
         }
     }
@@ -121,8 +134,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "startPlane")
         {
-            OntheGround = false;
-           
+            OntheGround = false;           
         }
     }
     public void SetpSpeed()
@@ -134,5 +146,33 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(t);
         SetpSpeed();
-    }   
+    }
+    public void SetFakeDie() //假死亡
+    {
+        playerData._status = PlayerData.PlayerStatus.FakeDie;
+        StartCoroutine(FakeDieTimer());
+
+    }
+    IEnumerator FakeDieTimer()
+    {
+        rb.AddForce(new Vector3(0, 4, 0), ForceMode.Impulse);
+        Vector3 dieRot = new Vector3(0, 0, 180);
+        transform.eulerAngles = dieRot;
+        GetComponent<BoxCollider>().isTrigger = true;
+        yield return new WaitForSeconds(playerData.FakeDieCD);
+        playerData._status = PlayerData.PlayerStatus.Idle;
+        GetComponent<BoxCollider>().isTrigger = false;
+        Vector3 normalRot = new Vector3(0, 0, 0);
+        transform.eulerAngles = normalRot;
+        transform.position = playerData.startPos;//TODO:bug
+        
+      
+    }
+
+    void setRot(float rot)
+    {
+        Vector3 Rot = new Vector3(0, rot, 0);
+        GetComponentsInChildren<Transform>()[1].eulerAngles = Rot;
+        //transform.eulerAngles = Rot;
+    }
 }

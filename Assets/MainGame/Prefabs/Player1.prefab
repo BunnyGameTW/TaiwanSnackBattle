@@ -83,6 +83,7 @@ GameObject:
   - component: {fileID: 54615844530889082}
   - component: {fileID: 65475737669539478}
   - component: {fileID: 114518858716091024}
+  - component: {fileID: 114938869971154372}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -302,7 +303,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1797840489532260}
-  m_LocalRotation: {x: -0, y: 0.99319184, z: -0, w: -0.11649038}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 157.28975, y: 157.28964, z: 157.28972}
   m_Children:
@@ -310,7 +311,7 @@ Transform:
   - {fileID: 4402933181362006}
   m_Father: {fileID: 4833204403132706}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 193.379, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4777116953240582
 Transform:
   m_ObjectHideFlags: 1
@@ -332,7 +333,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1516177088706516}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.28, y: -2.15, z: 0}
+  m_LocalPosition: {x: -6.95, y: -1.826, z: 0}
   m_LocalScale: {x: 0.6270484, y: 0.6270484, z: 0.6270484}
   m_Children:
   - {fileID: 4773769286964860}
@@ -433,7 +434,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.36, z: 1}
+  m_Size: {x: 0.74, y: 1.19, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95097449624621216
 Animator:
@@ -463,21 +464,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a055b31fc72cca94ea924e5699772b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spring: {x: 0, y: 0}
+  startPos: {x: 0, y: 0, z: 0}
   Speed: 3
   JumpHeight: 6
   JumpSpeed: 10
   DownSpeed: 10
   pSpeed: 0
-  Energy: 0
+  score: 0
   playKeyCode:
-    Jump: 32
+    Jump: 119
     Left: 97
     Right: 100
   Type: 0
   _status: 0
   canJump: 0
   canMove: 0
+  FakeDieCD: 3
+  canControl: 0
 --- !u!114 &114518858716091024
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -490,3 +493,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OntheGround: 0
+--- !u!114 &114938869971154372
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1516177088706516}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1cb3f423a515da438b41a0250f16f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 114366375305975744}
+  Timer: 1
+  DashPower: {x: 10, y: 0}
+  player: {fileID: 114518858716091024}
