@@ -5,10 +5,10 @@ public class cameraFollow : MonoBehaviour
 {
     public float zoomFactor;
     public Camera cam;
-    public Transform plaeyr1, p2;
+    public Transform p1, p2;
     private void Update()
     {
-        FixedCameraFollowSmooth(cam,plaeyr1,p2);
+        FixedCameraFollowSmooth(cam,p1,p2);
     }
     // Follow Two Transforms with a Fixed-Orientation Camera
     public void FixedCameraFollowSmooth(Camera cam, Transform t1, Transform t2)

@@ -15,7 +15,7 @@ public class PlaneEffect : MonoBehaviour {
 	}
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "Player" && other.GetComponent<PlayerData>().canControl)
         {
             switch (_planeData.type)
             {
@@ -29,6 +29,8 @@ public class PlaneEffect : MonoBehaviour {
                     break;
                 case 2://spring
                     other.GetComponent<Rigidbody>().AddForce(new Vector3(0, _planeData.springForce * Time.deltaTime, 0), ForceMode.Impulse);
+                    other.gameObject.GetComponents<AudioSource>()[1].PlayOneShot(AudioMag._audio.jump);
+
                     break;
                 case 3://split
                     StartCoroutine("splitTimer", _planeData.effectTime);
@@ -39,18 +41,11 @@ public class PlaneEffect : MonoBehaviour {
     }
     private void OnTriggerStay(Collider other)
     {
-        //if (other.tag == "Player")
-        //{
-        //    if (_planeData.type == 2)
-        //    {
-        //        other.GetComponent<Rigidbody>().AddForce(new Vector3(0, _planeData.springForce * Time.deltaTime, 0), ForceMode.Impulse);
-
-        //    }
-        //}
+      
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && other.GetComponent<PlayerData>().canControl)
         {
             if(_planeData.type == 3)
             {
@@ -60,11 +55,12 @@ public class PlaneEffect : MonoBehaviour {
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<PlayerData>().canControl)
         {
             if (_planeData.type == 2)
             {
                 collision.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, _planeData.springForce * Time.deltaTime, 0), ForceMode.Impulse);
+                collision.gameObject.GetComponents<AudioSource>()[1].PlayOneShot(AudioMag._audio.jump);
 
             }
             if (_planeData.type == 3)
@@ -74,17 +70,7 @@ public class PlaneEffect : MonoBehaviour {
             }
         }
     }
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            //if (_planeData.type == 2)
-            //{
-            //    collision.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, _planeData.springForce * Time.deltaTime, 0), ForceMode.Impulse);
-
-            //}
-        }
-    }
+    
     IEnumerator splitTimer(float t)
     {
 

@@ -17,7 +17,11 @@ public class GameManager : MonoBehaviour {
     public float hungerTime;//幾秒扣一次寫
     public GameObject[] displayFoods;
     public Transform foodCamPos;
+    public float MaxScore;//TODO:
+    int nowGameTime;
+    public uiManager _uiMag;
     // Use this for initialization
+    //TODO: 透視相機不能跟隨  
     void Awake () {
 		if(game == null)
         {
@@ -29,17 +33,34 @@ public class GameManager : MonoBehaviour {
         _planeMag.randomGenerate(_planeMag.initialNum);
         _itemMag.randomGenerate(_itemMag.initialNum);
         Invoke("checkWinner", gameTime);
+        InvokeRepeating("gameTimer", 0, 1);
+        nowGameTime = gameTime;
+        FindObjectOfType<AudioMagTest>().GetComponent<AudioSource>().clip = FindObjectOfType<AudioMag>().battleBGM;
+        FindObjectOfType<AudioMagTest>().GetComponent<AudioSource>().Play();
+
+    }
+    void gameTimer()
+    {
+        _uiMag.updateTimeTxt(nowGameTime);
+        nowGameTime--;
+       
     }
     void changeFood()
     {
-       int i = Random.Range(0, _itemMag._items.Length);
+
+        int i = Random.Range(0, _itemMag._items.Length);
+        Debug.Log(_itemMag._items.Length);
        ItemData [] _items =  FindObjectsOfType<ItemData>();
-        foreach (ItemData _item in _items)
+        for(int j = 0;j< _itemMag._items.Length; j++)
         {
-            if (_item.type == i) _item.score = mainFoodScore;
-            else _item.score = notMainFoodScore;
+            if (j == i)
+            {
+                _itemMag._items[j].item.GetComponent<ItemData>().score = mainFoodScore;
+            }
+            else _itemMag._items[j].item.GetComponent<ItemData>().score = notMainFoodScore;
         }
-        Debug.Log("main type: " + i);
+       GetComponent<AudioSource>().PlayOneShot(FindObjectOfType<AudioMag>().changeFood); 
+     //   Debug.Log("main item: " + i);
         Instantiate(displayFoods[i], foodCamPos);
         StartCoroutine(destroyDisplayFood());
     }
@@ -59,7 +80,10 @@ public class GameManager : MonoBehaviour {
     }
    void checkWinner()
     {
-        if(player1.GetComponent<PlayerData>().score > player2.GetComponent<PlayerData>().score) {
+        //Debug.Log(GameObject.Find("Player1").GetComponent<PlayerData>().score + "score" + player1.GetComponent<PlayerData>().Type);
+        //Debug.Log(player2.GetComponent<PlayerData>().score + "score" + player2.GetComponent<PlayerData>().Type);
+
+        if (GameObject.Find("Player1").GetComponent<PlayerData>().score > GameObject.Find("Player2").GetComponent<PlayerData>().score) {
             gameOver(player2.GetComponent<PlayerData>().Type);
         }
         else
@@ -69,16 +93,18 @@ public class GameManager : MonoBehaviour {
     }
     public void gameOver(PlayerData.PlayerType _pType)//傳入死亡或低分的人
     {
-        if(_pType == PlayerData.PlayerType.Player1) {
-            //TODO:change scene or  camera zoom in to PLAYER2
-            Debug.Log("player2 winner");
-        }
-        else
+        Debug.Log("loser: " + _pType);
+        CancelInvoke("changeFood");
+        CancelInvoke("gameTimer");
+        _itemMag.gameOver();
+        foreach (ItemData item in FindObjectsOfType<ItemData>())
         {
-            //TODO:change scene or  camera zoom in to PLAYER1
-            Debug.Log("player1 winner");
-
+            Destroy(item.gameObject);
         }
+       
+        FindObjectOfType<CameraControl>().Over(_pType);
+        FindObjectsOfType<PlayerData>()[0]._status = PlayerData.PlayerStatus.Over;
+        FindObjectsOfType<PlayerData>()[1]._status = PlayerData.PlayerStatus.Over;
     }
     
 }

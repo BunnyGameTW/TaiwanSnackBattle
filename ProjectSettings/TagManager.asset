@@ -8,6 +8,7 @@ TagManager:
   - target
   - Ground
   - startPlane
+  - sound
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BG
+    uniqueID: 1930752137
+    locked: 0
+  - name: char
+    uniqueID: 3680923531
+    locked: 0
+  - name: UI
+    uniqueID: 3961732503
     locked: 0

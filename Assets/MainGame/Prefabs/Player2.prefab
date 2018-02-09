@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 54172899225374758}
   - component: {fileID: 65135141093931708}
   - component: {fileID: 114433220618726464}
+  - component: {fileID: 95644355103923816}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -146,7 +147,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1762923602473102}
-  m_LocalRotation: {x: -0, y: 0.99847335, z: -0, w: -0.05523571}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00000004371139}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 176.52058, y: 176.52066, z: 176.52066}
   m_Children:
@@ -156,7 +157,7 @@ Transform:
   - {fileID: 4132625229996864}
   m_Father: {fileID: 4947234602681920}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 186.333, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4775733969878422
 Transform:
   m_ObjectHideFlags: 1
@@ -177,7 +178,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1088456895107502}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.14, y: -2.11, z: 0}
+  m_LocalPosition: {x: -6.14, y: -1.806, z: 0}
   m_LocalScale: {x: 0.6270484, y: 0.6270484, z: 0.6270484}
   m_Children:
   - {fileID: 4469141946333112}
@@ -386,7 +387,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.54, z: 1}
+  m_Size: {x: 0.7, y: 1.28, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95440911702150706
 Animator:
@@ -398,6 +399,23 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 6fba27623646088498408ebec562b325, type: 3}
   m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!95 &95644355103923816
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088456895107502}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5ee26ab54155c7c429713c6a829a2b9d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -428,13 +446,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a055b31fc72cca94ea924e5699772b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spring: {x: 0, y: 0}
+  startPos: {x: 0, y: 0, z: 0}
   Speed: 3
   JumpHeight: 6
   JumpSpeed: 10
   DownSpeed: 10
   pSpeed: 0
-  Energy: 0
+  score: 0
   playKeyCode:
     Jump: 273
     Left: 276
@@ -443,3 +461,6 @@ MonoBehaviour:
   _status: 0
   canJump: 0
   canMove: 0
+  FakeDieCD: 3
+  canControl: 0
+  startScore: 5

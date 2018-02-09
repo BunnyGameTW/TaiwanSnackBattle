@@ -18,13 +18,13 @@ public class PlayerData : MonoBehaviour {
     }
     public enum PlayerType { Player1, Player2 }
     public PlayerType Type;
-    public enum PlayerStatus { Idle, JumpUp, JumpDown, FakeDie, Die }
+    public enum PlayerStatus { Idle, JumpUp, JumpDown, FakeDie, Die ,Over}
     public PlayerStatus _status;
     public bool canJump, canMove;
     public float FakeDieCD;
     public bool canControl;
     public float startScore;
-    void Start()
+    void Awake()
     {
         canControl = canJump = canMove = true;
         pSpeed = Speed;

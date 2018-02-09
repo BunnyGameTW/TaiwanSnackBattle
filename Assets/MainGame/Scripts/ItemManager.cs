@@ -30,6 +30,10 @@ public class ItemManager : MonoBehaviour {
        
        
 	}
+    public  void gameOver()
+    {
+        CancelInvoke("generateTimer");
+    }
     void generateTimer()
     {
         generatetimer += Time.deltaTime;
@@ -70,7 +74,7 @@ public class ItemManager : MonoBehaviour {
                     }
                 }
             }
-            //TODO:改成真正的隨機
+            
             GameObject[] _planes = GameObject.FindGameObjectsWithTag("Ground");
 
 
