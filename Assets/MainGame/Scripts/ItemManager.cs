@@ -69,6 +69,7 @@ public class ItemManager : MonoBehaviour {
                     }
                 }
             }
+            //TODO:改成真正的隨機
             GameObject [] _planes = GameObject.FindGameObjectsWithTag("Ground");
             foreach (GameObject _plane in _planes)
             {

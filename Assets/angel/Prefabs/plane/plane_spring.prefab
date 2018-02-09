@@ -631,4 +631,4 @@ MonoBehaviour:
   effectTime: 5
   hasItem: 1
   slowSpeed: 0
-  springForce: 250
+  springForce: 300

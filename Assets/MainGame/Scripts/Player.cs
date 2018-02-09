@@ -20,9 +20,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
+ //       Debug.Log("velocity:" + rb.velocity);
         Control();
-        
+        //
+        //死亡判定
         //掉到底下不能控制N秒
         //衝刺
     }
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour
         if (playerData.canMove) { Move(); }
         if (playerData.canJump && OntheGround) { Jump(); }
 
-        if (rb.velocity.y > 0) { playerData._status = PlayerData.PlayerStatus.JumpUp; }
+        if (rb.velocity.y > 0) { playerData._status = PlayerData.PlayerStatus.JumpUp; }//TODO:看一下jump值
         else playerData._status = PlayerData.PlayerStatus.JumpDown;
         //if (rb.velocity.y == 0) playerData.canJump = true;
         //    Debug.Log(rb.velocity.y);
@@ -72,7 +73,8 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(playerData.playKeyCode.Jump))
         {
-            rb.AddForce(new Vector3(0, 300 * Time.deltaTime, 0), ForceMode.Impulse);        
+            rb.AddForce(new Vector3(0, playerData.JumpHeight, 0), ForceMode.Impulse);
+            Debug.Log("force: " + playerData.JumpHeight);
         }
     }
     private void OnCollisionEnter(Collision collision)
