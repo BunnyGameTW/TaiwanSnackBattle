@@ -696,7 +696,7 @@ MonoBehaviour:
   type: 0
   _name: 
   addSpeed: 0
-  score: 2
+  score: 1
   existTime: 9
   effectTime: 0
   yOffsst: 1

@@ -169,5 +169,5 @@ MonoBehaviour:
   type: 1
   effectTime: 5
   hasItem: 1
-  slowSpeed: 2
+  slowSpeed: 6
   springForce: 0

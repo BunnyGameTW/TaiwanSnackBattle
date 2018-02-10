@@ -23,6 +23,7 @@ public class PlaneEffect : MonoBehaviour {
                     break;
                 case 1://slow speed
                     other.GetComponent<PlayerData>().Speed += _planeData.slowSpeed;
+                    Debug.Log("123456");
                     if (other.GetComponent<PlayerData>().Speed < 0) other.GetComponent<PlayerData>().Speed = 2;//TODO:給最低限速
                     other.GetComponent<Player>().StartCoroutine("speedTimer", _planeData.effectTime);
 
