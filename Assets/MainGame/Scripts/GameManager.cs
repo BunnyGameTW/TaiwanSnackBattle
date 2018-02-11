@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
         }
 
         planeRanPos = GameObject.FindGameObjectsWithTag("target");
-        InvokeRepeating("changeFood", 0, changeItemTime);//TODO:吃到就換食物還是設固定時間換食物
+        InvokeRepeating("changeFood", 0, changeItemTime);
         _planeMag.randomGenerate(_planeMag.initialNum);
         _itemMag.randomGenerate(_itemMag.initialNum);
         Invoke("checkWinner", gameTime);
@@ -48,18 +48,33 @@ public class GameManager : MonoBehaviour {
     void changeFood()
     {
 
-        int i = Random.Range(0, _itemMag._items.Length);
-        Debug.Log(_itemMag._items.Length);
-       ItemData [] _items =  FindObjectsOfType<ItemData>();
-        for(int j = 0;j< _itemMag._items.Length; j++)
+        int i = Random.Range(0, _itemMag._items.Length);//0 1 2 3
+       ItemData [] itemsInScene =  FindObjectsOfType<ItemData>();//get all itemData and set their scores
+
+        for (int num = 0; num < itemsInScene.Length; num++)
+        {
+            if (itemsInScene[num].index == i)
+            {
+                itemsInScene[num].score = mainFoodScore;
+            }
+            else
+            {
+                itemsInScene[num].score = notMainFoodScore;
+            }
+        }
+        for (int j = 0; j < _itemMag._items.Length; j++)
         {
             if (j == i)
             {
                 _itemMag._items[j].item.GetComponent<ItemData>().score = mainFoodScore;
             }
-            else _itemMag._items[j].item.GetComponent<ItemData>().score = notMainFoodScore;
+            else
+            {
+                _itemMag._items[j].item.GetComponent<ItemData>().score = notMainFoodScore;
+
+            }
         }
-       GetComponent<AudioSource>().PlayOneShot(FindObjectOfType<AudioMag>().changeFood); 
+        GetComponent<AudioSource>().PlayOneShot(FindObjectOfType<AudioMag>().changeFood); 
      //   Debug.Log("main item: " + i);
         Instantiate(displayFoods[i], foodCamPos);
         StartCoroutine(destroyDisplayFood());

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ItemData : MonoBehaviour {
 
-    public int type;
+    public int type;//effect type
+    public int index;
     public string _name;
     public float addSpeed;
     public float score;

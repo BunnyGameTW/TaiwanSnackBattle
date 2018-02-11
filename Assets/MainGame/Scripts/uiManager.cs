@@ -6,7 +6,7 @@ public class uiManager : MonoBehaviour {
     public GameObject leftUI, rightUI;
     public Text timeTxt;
     public Text timeTxt_buttom;
-	
+  
     public void updateTimeTxt(int i)
     {
         if (i < 0) i = 0;

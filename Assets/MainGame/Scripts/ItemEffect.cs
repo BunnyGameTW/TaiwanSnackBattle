@@ -32,24 +32,25 @@ public class ItemEffect : MonoBehaviour {
     void effect() {
         switch (_itemdata.type)
         {
-            case 0:
-              
-                playerCol.gameObject.GetComponent<PlayerData>().score += _itemdata.score;               
-                GameManager.game._uiMag.updateScore(playerCol.gameObject.GetComponent<PlayerData>());
+            case 0:             
                 GetComponentInParent<PlaneData>().hasItem = false;
+                GetComponent<FoodMove>().Playertype = playerCol.GetComponent<PlayerData>().Type;
+                GetComponent<FoodMove>().startMove = true;
+            //    transform.GetChild(1).gameObject.SetActive(false);
                 playerCol.gameObject.GetComponents<AudioSource>()[0].PlayOneShot(AudioMag._audio.pick);
-                Destroy(this.gameObject);             
+                CancelInvoke();
+
                 break;
             case 1:
-                //set player speed up;
+                //set player speed up;             
                 playerCol.gameObject.GetComponent<PlayerData>().Speed += _itemdata.addSpeed;
-                playerCol.gameObject.GetComponent<PlayerData>().score += _itemdata.score;
-                GameManager.game._uiMag.updateScore(playerCol.gameObject.GetComponent<PlayerData>());
-                playerCol.gameObject.GetComponents<AudioSource>()[0].PlayOneShot(AudioMag._audio.pick);
-
                 playerCol.gameObject.GetComponent<Player>().StartCoroutine("speedTimer", _itemdata.effectTime);
                 GetComponentInParent<PlaneData>().hasItem = false;
-                Destroy(this.gameObject);
+                GetComponent<FoodMove>().Playertype = playerCol.GetComponent<PlayerData>().Type;
+                GetComponent<FoodMove>().startMove = true;
+             //   transform.GetChild(1).gameObject.SetActive(false);
+                playerCol.gameObject.GetComponents<AudioSource>()[0].PlayOneShot(AudioMag._audio.pick);
+                CancelInvoke();
                 break;
             case 2:
 
@@ -57,5 +58,10 @@ public class ItemEffect : MonoBehaviour {
                // playerCol.gameObject.GetComponent<PlayerData>().playerState = PlayerData.PlayerState.Fly;
                 break;
         }
+    }
+    public void AddScore()
+    {
+        playerCol.gameObject.GetComponent<PlayerData>().score += _itemdata.score;
+        GameManager.game._uiMag.updateScore(playerCol.gameObject.GetComponent<PlayerData>());
     }
 }

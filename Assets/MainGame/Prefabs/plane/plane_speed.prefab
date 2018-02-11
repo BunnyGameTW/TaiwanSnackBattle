@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  effectTime: 5
+  effectTime: 3
   hasItem: 1
-  slowSpeed: 6
+  slowSpeed: 2
   springForce: 0

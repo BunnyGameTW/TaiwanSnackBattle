@@ -21,10 +21,9 @@ public class PlaneEffect : MonoBehaviour {
             {
                 case 0:                  
                     break;
-                case 1://slow speed
-                    other.GetComponent<PlayerData>().Speed += _planeData.slowSpeed;
-                    Debug.Log("123456");
-                    if (other.GetComponent<PlayerData>().Speed < 0) other.GetComponent<PlayerData>().Speed = 2;//TODO:給最低限速
+                case 1://add or slow speed
+                    other.GetComponent<PlayerData>().Speed += _planeData.slowSpeed;                
+                    if (other.GetComponent<PlayerData>().Speed > 4) other.GetComponent<PlayerData>().Speed = 2;//限速
                     other.GetComponent<Player>().StartCoroutine("speedTimer", _planeData.effectTime);
 
                     break;
@@ -58,16 +57,22 @@ public class PlaneEffect : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<PlayerData>().canControl)
         {
-            if (_planeData.type == 2)
+            if (_planeData.type == 1)//speed
+            {
+                collision.gameObject.GetComponent<PlayerData>().Speed += _planeData.slowSpeed;
+                if (collision.gameObject.GetComponent<PlayerData>().Speed > 4) collision.gameObject.GetComponent<PlayerData>().Speed = 4;//限速
+                collision.gameObject.GetComponent<Player>().StartCoroutine("speedTimer", _planeData.effectTime);
+
+            }
+            else if (_planeData.type == 2)//spring
             {
                 collision.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, _planeData.springForce * Time.deltaTime, 0), ForceMode.Impulse);
                 collision.gameObject.GetComponents<AudioSource>()[1].PlayOneShot(AudioMag._audio.jump);
 
             }
-            if (_planeData.type == 3)
+            else if (_planeData.type == 3)//split
             {
                 StartCoroutine("splitTimer", _planeData.effectTime);
-
             }
         }
     }
